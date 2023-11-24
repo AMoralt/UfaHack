@@ -26,7 +26,7 @@ public class LoginQueryHandler : IRequestHandler<LoginQuery, Credentials>
     public async Task<Credentials> Handle(LoginQuery request, CancellationToken cancellationToken)
     {
         var result = await _credentialRepository.GetAsync(request.Login, request.Password, cancellationToken);
-
+        
         if (result is null)
             throw new UnauthorizedException("User not found");
 
@@ -34,8 +34,8 @@ public class LoginQueryHandler : IRequestHandler<LoginQuery, Credentials>
         {
             Login = request.Login,
             Id = result.Id,
-            DisplayName = $"{result.Surname} {(!string.IsNullOrEmpty(result.GivenName) ? $"{result.GivenName.Substring(0, 1)}." : "")}{(!string.IsNullOrEmpty(result.MiddleName) ? $"{result .MiddleName.Substring(0, 1)}." : "")}",
-            RoleCode = result.RoleCode
+            Name = result.Name,
+            Role = result.Role
         };
         
         user.Token = _jwtService.GenerateJwtToken(user);

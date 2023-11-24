@@ -1,14 +1,15 @@
 ﻿using Application.Exception;
+using Domain.AggregationModels;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 [Route("[controller]")]
 [ApiController]
-public class TicketController : ControllerBase
+public class UserController : ControllerBase
 {
     private readonly IMediator _mediator;
-    public TicketController(IMediator mediator)
+    public UserController(IMediator mediator)
     {
         _mediator = mediator;
     }
@@ -31,13 +32,13 @@ public class TicketController : ControllerBase
             return Results.BadRequest(e.Message);
         }
     }
-    [Route("Account/SignIn")]
+    [Route("Account/SignUp")]
     [HttpPost]
-    public async Task<IResult> Signin([FromBody] SignupQuery signinData,CancellationToken token)
+    public async Task<IResult> Signup([FromBody] SignupQuery signinData, CancellationToken token)
     {
         try
         {
-            var result = await _mediator.Send(signinData, token);
+            Credentials result = await _mediator.Send(signinData, token);
 
             if (result is null)
                 return Results.BadRequest();

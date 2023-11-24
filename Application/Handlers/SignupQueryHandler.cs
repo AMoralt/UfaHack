@@ -28,23 +28,25 @@ public class SignupQueryHandler : IRequestHandler<SignupQuery, Credentials>
         var existingUser = await _credentialRepository.GetAsync(request.Login, cancellationToken);
         if (existingUser != null)
         {
-            // Throw exception or handle accordingly
             throw new UserAlreadyExistsException("User already exists with the same login");
         }
         
         var newUser = new UserData
         {
-            
+            Login = request.Login,
+            Name = request.Name,
+            Email = request.Email,
+            Password = request.Password
         };
-        await _credentialRepository.CreateAsync(newUser, cancellationToken);
+        await _unitOfWork.StartTransaction(cancellationToken);
+        var resultId = await _credentialRepository.CreateAsync(newUser, cancellationToken);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
         
-        var credentials = new Credentials
+        Credentials credentials = new Credentials
         {
-            //Login = newUser.Login,
-            Id = newUser.Id,
-            //DisplayName = newUser.DisplayName,
-            RoleCode = newUser.RoleCode
+            Id = resultId,
+            Login = newUser.Login,
+            Name = newUser.Name
         };
         
         credentials.Token = _jwtService.GenerateJwtToken(credentials);
@@ -54,5 +56,5 @@ public class SignupQueryHandler : IRequestHandler<SignupQuery, Credentials>
 }
 
 public record SignupQuery(
-    string Login,
-    string Password) :  IRequest<Credentials>;
+    string Login, string Name, 
+    string Email, string Password) :  IRequest<Credentials>;

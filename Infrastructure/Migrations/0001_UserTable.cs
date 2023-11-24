@@ -9,12 +9,12 @@ public class UserTable: Migration
         Execute.Sql(@"
 CREATE TABLE Users (
     UserID SERIAL PRIMARY KEY,
-    Username VARCHAR(50) UNIQUE NOT NULL,
+    Login VARCHAR(50) UNIQUE NOT NULL,
+    Name VARCHAR(50) UNIQUE NOT NULL,
     Email VARCHAR(255) UNIQUE NOT NULL,
-    PasswordHash VARCHAR(255) NOT NULL,
+    Password VARCHAR(255) NOT NULL,
     RegistrationDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    LastLogin TIMESTAMP,
-    Role VARCHAR(50) NOT NULL
+    Role VARCHAR(50) NOT NULL DEFAULT 'U'
 );
 ");
     }

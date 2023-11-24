@@ -12,9 +12,9 @@ public class Credentials
     /// </summary>
     public string Login { get; set; }
     public string Token { get; set; }
-    public string RoleCode { get; set; }
+    public string Role { get; set; }
     public TokenException TokenException { get; set; }
-    public string DisplayName { get; set; }
+    public string Name { get; set; }
 }
 
 public enum TokenException

@@ -26,8 +26,7 @@ public class JwtService : IJwtService
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("N")),
             new Claim(ClaimsIdentity.DefaultNameClaimType, user.Login),
             new Claim("id", user.Id.ToString()),
-            new Claim("uname", user.DisplayName.ToString()),
-            new Claim("role", user.RoleCode.ToString())
+            new Claim("uname", user.Name.ToString())
         };
 
         // Create the credentials used to generate the token
@@ -83,8 +82,7 @@ public class JwtService : IJwtService
             }
             output.Id = tmp;
             output.Login = jwtToken.Claims.First(c => c.Type == ClaimTypes.Name).Value;
-            output.DisplayName = jwtToken.Claims.First(c => c.Type == "uname").Value;
-            output.RoleCode  = jwtToken.Claims.First(c => c.Type == "role").Value;
+            output.Name = jwtToken.Claims.First(c => c.Type == "uname").Value;
             output.TokenException = TokenException.Ok;
             return output;
         }

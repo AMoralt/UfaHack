@@ -3,27 +3,32 @@ using System.ComponentModel.DataAnnotations;
  
 namespace O2GEN.Models
 {
-    public class UserData : Entity
+    public class UserData
     {
-        /// <summary>
-        /// Engineers.Id
-        /// </summary>
         public int Id { get; set; }
         /// <summary>
-        /// Фамилия
+        /// Логин
         /// </summary>
-        public string Surname { get; set; }
+        public string Login { get; set; }
         /// <summary>
         /// Имя
         /// </summary>
-        public string GivenName { get; set; }
+        public string Name { get; set; }
         /// <summary>
-        /// Отчество
+        /// Имя
         /// </summary>
-        public string MiddleName { get; set; }
+        public string Email { get; set; }
+        /// <summary>
+        /// Имя
+        /// </summary>
+        public string Password { get; set; }
+        /// <summary>
+        /// Имя
+        /// </summary>
+        public DateTime RegistrationDate { get; set; }
         /// <summary>
         /// SA - SuperAdmin | A - Admin | U - User
         /// </summary>
-        public string RoleCode { get; set; }
+        public string Role { get; set; }
     }
 }
