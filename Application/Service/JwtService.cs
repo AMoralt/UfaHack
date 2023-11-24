@@ -18,7 +18,7 @@ public class JwtService : IJwtService
         _jwtConfig = options.Value;
     }
 
-    public string GenerateJwtToken(Credentials user)
+    public string GenerateJwtToken(CredentialsDTO user)
     {
         // Set our tokens claims
         var claims = new[]
@@ -51,7 +51,7 @@ public class JwtService : IJwtService
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
 
-    public Credentials ValidateJwtToken(string token)
+    public CredentialsDTO ValidateJwtToken(string token)
     {
         if (string.IsNullOrEmpty(token))
         {
@@ -70,7 +70,7 @@ public class JwtService : IJwtService
             ClockSkew = TimeSpan.Zero,
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtConfig.Key)) 
         };
-        Credentials output = new Credentials();
+        CredentialsDTO output = new CredentialsDTO();
         try
         {
             tokenHandler.ValidateToken(token, validationParameters, out SecurityToken validatedToken);

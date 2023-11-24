@@ -13,7 +13,7 @@ public class UserController : ControllerBase
     {
         _mediator = mediator;
     }
-    [Route("Account/Login")]
+    [Route("User/Login")]
     [HttpPost]
     public async Task<IResult> Login([FromBody] LoginQuery loginData,CancellationToken token)
     {
@@ -32,17 +32,56 @@ public class UserController : ControllerBase
             return Results.BadRequest(e.Message);
         }
     }
-    [Route("Account/SignUp")]
+    [Route("User/SignUp")]
     [HttpPost]
-    public async Task<IResult> Signup([FromBody] SignupQuery signinData, CancellationToken token)
+    public async Task<IResult> SignUp([FromBody] SignupCommand signinData, CancellationToken token)
     {
         try
         {
-            Credentials result = await _mediator.Send(signinData, token);
+            CredentialsDTO result = await _mediator.Send(signinData, token);
 
             if (result is null)
                 return Results.BadRequest();
 
+            return Results.Ok();
+        }
+        catch (UnauthorizedException e)
+        {
+            return Results.Unauthorized();
+        }
+        catch (System.Exception e)
+        {
+            return Results.BadRequest(e.Message);
+        }
+    }
+    [Route("User/Delete")]
+    [HttpPost]
+    public async Task<IResult> Delete([FromBody] SignupCommand signinData, CancellationToken token)
+    {
+        try
+        {
+            CredentialsDTO result = await _mediator.Send(signinData, token);
+
+            if (result is null)
+                return Results.BadRequest();
+
+            return Results.Ok();
+        }
+        catch (UnauthorizedException e)
+        {
+            return Results.Unauthorized();
+        }
+        catch (System.Exception e)
+        {
+            return Results.BadRequest(e.Message);
+        }
+    }
+    [Authorize]
+    [HttpGet]
+    public async Task<IResult> Sign(CancellationToken token)
+    {
+        try
+        {
             return Results.Ok();
         }
         catch (UnauthorizedException e)

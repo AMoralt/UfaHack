@@ -4,6 +4,6 @@ namespace Application.Service;
 
 public interface IJwtService
 {
-    string GenerateJwtToken(Credentials user);
-    Credentials ValidateJwtToken(string token);
+    string GenerateJwtToken(CredentialsDTO user);
+    CredentialsDTO ValidateJwtToken(string token);
 }

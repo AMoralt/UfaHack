@@ -15,11 +15,11 @@ public class CredentialRepository : ICredentialRepository
     public async Task<int> CreateAsync(UserData itemToCreate, CancellationToken cancellationToken = default)
     {
         const string sql = @"
-INSERT INTO Users (Login, Name, Email, Password)
-VALUES 
-(@login,@name,@email,pgp_sym_encrypt(@password, @en))
-RETURNING UserID;
-";
+            INSERT INTO Users (Login, Name, Email, Password)
+            VALUES 
+                (@login,@name,@email,pgp_sym_encrypt(@password, @en))
+            RETURNING UserID;
+            ";
         var parameters = new
         {
             login = itemToCreate.Login.ToLower(),
@@ -37,18 +37,15 @@ RETURNING UserID;
     }
     public async Task<IQueryable<UserData>> GetAllAsync(CancellationToken cancellationToken = default)
     {
-        // const string sql = @"SELECT 5";
-        // var connection = await _dbConnectionFactory.CreateConnection(cancellationToken);
-        // var result = await connection.ExecuteAsync(sql);
         throw new NotImplementedException();
     }
     public async Task<UserData> GetAsync(string login, string password, CancellationToken cancellationToken = default)
     {
         const string sql = @"
-SELECT UserID AS Id, Login, Name, Email, RegistrationDate, Role
-FROM Users AS u
-WHERE u.Login = @login AND encode(digest(pgp_sym_decrypt(cast(u.Password as bytea), @en), 'sha256'), 'hex') = encode(digest(@password, 'sha256'), 'hex')
-";
+            SELECT UserID AS Id, Login, Name, Email, RegistrationDate, Role
+            FROM Users AS u
+            WHERE u.Login = @login AND encode(digest(pgp_sym_decrypt(cast(u.Password as bytea), @en), 'sha256'), 'hex') = encode(digest(@password, 'sha256'), 'hex')
+            ";
         var parameters = new
         {
             password = password,
@@ -59,7 +56,7 @@ WHERE u.Login = @login AND encode(digest(pgp_sym_decrypt(cast(u.Password as byte
         var connection = await _dbConnectionFactory.CreateConnection(cancellationToken);
 
         var user = await connection
-            .QuerySingleAsync<UserData>(sql, param: parameters);
+            .QuerySingleOrDefaultAsync<UserData>(sql, param: parameters);
 
         return user;
     }
@@ -67,9 +64,10 @@ WHERE u.Login = @login AND encode(digest(pgp_sym_decrypt(cast(u.Password as byte
     public async Task<UserData> GetAsync(string login, CancellationToken cancellationToken = default)
     {
         const string sql = $@"
-SELECT UserID AS Id, Login, Name, Email, RegistrationDate, Role
-FROM Users AS u
-WHERE u.Login = @login";
+            SELECT UserID AS Id, Login, Name, Email, RegistrationDate, Role
+            FROM Users AS u
+            WHERE u.Login = @login
+            ";
         var parameters = new
         {
             login = login
@@ -88,8 +86,19 @@ WHERE u.Login = @login";
         throw new NotImplementedException();
     }
 
-    public Task DeleteAsync(UserData itemToDelete, CancellationToken cancellationToken = default)
+    public async Task<int> DeleteAsync(UserData itemToDelete, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        const string sql = @"
+            DELETE
+            FROM Users AS u
+            WHERE u.UserID = @id
+            RETURNING UserID";
+        
+        var parameters = new { id = itemToDelete.Id };
+        var connection = await _dbConnectionFactory.CreateConnection(cancellationToken);
+        
+        var Id = await connection.ExecuteScalarAsync(sql, param: parameters);
+
+        return (int)Id;
     }
 }

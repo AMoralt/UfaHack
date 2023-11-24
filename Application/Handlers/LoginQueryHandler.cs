@@ -10,7 +10,7 @@ using Microsoft.IdentityModel.Tokens;
 using O2GEN.Authorization;
 using O2GEN.Models;
 
-public class LoginQueryHandler : IRequestHandler<LoginQuery, Credentials>
+public class LoginQueryHandler : IRequestHandler<LoginQuery, CredentialsDTO>
 {
     private readonly ICredentialRepository _credentialRepository;
     private readonly IUnitOfWork _unitOfWork;
@@ -23,14 +23,14 @@ public class LoginQueryHandler : IRequestHandler<LoginQuery, Credentials>
         _jwtService = jwtService;
     }
 
-    public async Task<Credentials> Handle(LoginQuery request, CancellationToken cancellationToken)
+    public async Task<CredentialsDTO> Handle(LoginQuery request, CancellationToken cancellationToken)
     {
         var result = await _credentialRepository.GetAsync(request.Login, request.Password, cancellationToken);
         
         if (result is null)
             throw new UnauthorizedException("User not found");
 
-        var user = new Credentials
+        var user = new CredentialsDTO
         {
             Login = request.Login,
             Id = result.Id,
@@ -46,4 +46,4 @@ public class LoginQueryHandler : IRequestHandler<LoginQuery, Credentials>
 
 public record LoginQuery(
     string Login,
-    string Password) :  IRequest<Credentials>;
+    string Password) :  IRequest<CredentialsDTO>;

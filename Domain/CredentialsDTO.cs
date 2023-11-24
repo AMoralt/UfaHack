@@ -3,7 +3,7 @@ using O2GEN.Authorization;
 
 namespace Domain.AggregationModels;
 
-public class Credentials
+public class CredentialsDTO
 {
     [JsonIgnore]
     public int Id { get; set; }
