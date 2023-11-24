@@ -1,4 +1,5 @@
 using System.Text;
+using Application.Service;
 using FluentMigrator.Runner;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -36,6 +37,7 @@ builder.Services.AddScoped<IDbConnectionFactory<NpgsqlConnection>, NpgsqlConnect
 builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
 builder.Services.AddScoped<IChangeTracker,ChangeTracker>();
 builder.Services.AddScoped<ICredentialRepository, CredentialRepository>();
+builder.Services.AddSingleton<IJwtService, JwtService>();
 
 var connectionString = builder.Configuration["DatabaseConnectionOptions:ConnectionString"];
 

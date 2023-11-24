@@ -1,7 +1,7 @@
 ﻿
 using FluentMigrator;
 
-[Migration(7)]
+[Migration(6)]
 public class UserSubmissionTable: Migration
 {
     public override void Up()

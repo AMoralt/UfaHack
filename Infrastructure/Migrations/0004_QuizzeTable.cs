@@ -1,7 +1,7 @@
 ﻿
 using FluentMigrator;
 
-[Migration(5)]
+[Migration(4)]
 public class QuizzeTable: Migration
 {
     public override void Up()
@@ -13,8 +13,7 @@ CREATE TABLE Quizzes (
     Question TEXT NOT NULL,
     Options TEXT[] NOT NULL,
     CorrectOption INT NOT NULL,
-    Explanation TEXT NOT NULL,
-    FOREIGN KEY (LessonID) REFERENCES Lessons(LessonID)
+    Explanation TEXT NOT NULL
 );
 ");
     }

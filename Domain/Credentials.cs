@@ -16,3 +16,10 @@ public class Credentials
     public TokenException TokenException { get; set; }
     public string DisplayName { get; set; }
 }
+
+public enum TokenException
+{
+    Ok = 0,
+    Expired = 1,
+    WrongToken = 2
+}

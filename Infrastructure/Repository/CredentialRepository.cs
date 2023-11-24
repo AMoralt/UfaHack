@@ -27,6 +27,11 @@ public class CredentialRepository : ICredentialRepository
         return null;
     }
 
+    public Task<UserData> GetAsync(string login, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
+
     public Task UpdateAsync(UserData itemToUpdate, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();

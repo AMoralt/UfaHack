@@ -1,7 +1,7 @@
 ﻿
 using FluentMigrator;
 
-[Migration(8)]
+[Migration(7)]
 public class FeedbackTable: Migration
 {
     public override void Up()

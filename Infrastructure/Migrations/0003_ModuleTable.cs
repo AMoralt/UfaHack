@@ -12,7 +12,7 @@ CREATE TABLE Modules (
     CourseID INT NOT NULL,
     Title VARCHAR(255) NOT NULL,
     Description TEXT NOT NULL,
-    Order INT NOT NULL,
+    ModuleOrder INT NOT NULL,
     FOREIGN KEY (CourseID) REFERENCES Courses(CourseID)
 );
 ");

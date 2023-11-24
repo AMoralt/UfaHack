@@ -31,9 +31,9 @@ public class TicketController : ControllerBase
             return Results.BadRequest(e.Message);
         }
     }
-    /*[Route("Account/SignIn")]
+    [Route("Account/SignIn")]
     [HttpPost]
-    public async Task<IResult> Signin([FromBody] SigninQuery signinData,CancellationToken token)
+    public async Task<IResult> Signin([FromBody] SignupQuery signinData,CancellationToken token)
     {
         try
         {
@@ -52,12 +52,5 @@ public class TicketController : ControllerBase
         {
             return Results.BadRequest(e.Message);
         }
-    }*/
-
-    [HttpGet("{id}")] // GET /ticket/id
-    public async Task<IResult> GetUserById(int id, CancellationToken token)
-    {
-        Console.WriteLine("UserController.GetUserByIdAndName");
-        return Results.Ok(null);
     }
 }
