@@ -1,6 +1,7 @@
 using System.Text;
 using Application.Service;
 using FluentMigrator.Runner;
+using Infrastructure.Repository;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -38,6 +39,8 @@ builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
 builder.Services.AddScoped<IChangeTracker,ChangeTracker>();
 builder.Services.AddScoped<ICredentialRepository, CredentialRepository>();
 builder.Services.AddScoped<ICoursesRepository, CoursesRepository>();
+builder.Services.AddScoped<IModulesRepository, ModulesRepository>();
+builder.Services.AddScoped<IQuizRepository, QuizRepository>();
 builder.Services.AddSingleton<IJwtService, JwtService>();
 
 var connectionString = builder.Configuration["DatabaseConnectionOptions:ConnectionString"];

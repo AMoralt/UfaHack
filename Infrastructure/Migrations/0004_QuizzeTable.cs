@@ -9,11 +9,12 @@ public class QuizzeTable: Migration
         Execute.Sql(@"
 CREATE TABLE Quizzes (
     QuizID SERIAL PRIMARY KEY,
-    LessonID INT NOT NULL,
+    ModuleID INT NOT NULL,
     Question TEXT NOT NULL,
-    Options TEXT[] NOT NULL,
-    CorrectOption INT NOT NULL,
-    Explanation TEXT NOT NULL
+    Options TEXT[],
+    CorrectOption INT[] NOT NULL,
+    Explanation TEXT NOT NULL,
+    FOREIGN KEY (ModuleID) REFERENCES Modules(ModuleID)
 );
 ");
     }

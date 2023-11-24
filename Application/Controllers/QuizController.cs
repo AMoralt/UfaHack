@@ -1,25 +1,26 @@
-﻿using Application.Exception;
-using Domain.AggregationModels;
+﻿using Application.Handlers;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+
+namespace Application.Controllers;
 
 [Route("[controller]")]
 [ApiController]
-public class ModuleController : ControllerBase
+public class QuizController : ControllerBase
 {
     private readonly IMediator _mediator;
-    public ModuleController(IMediator mediator)
+    public QuizController(IMediator mediator)
     {
         _mediator = mediator;
     }
 
+    // Get all quizzes
     [HttpGet]
-    public async Task<IResult> GetAllModules(int id, CancellationToken token)
+    public async Task<IResult> GetAllQuizzes(int moduleId, CancellationToken token)
     {
         try
         {
-            var getAll = new GetModulesQuery(id);
+            var getAll = new GetQuizzesQuery(moduleId);
             var result = await _mediator.Send(getAll, token);
             return Results.Ok(result);
         }
@@ -28,12 +29,14 @@ public class ModuleController : ControllerBase
             return Results.BadRequest(e.Message);
         }
     }
+
+    // Create a new quiz
     [HttpPost]
-    public async Task<IResult> CreateModule([FromBody] CreateModuleCommand createCourseCommand, CancellationToken token)
+    public async Task<IResult> CreateQuiz([FromBody] CreateQuizCommand createQuizCommand, CancellationToken token)
     {
         try
         {
-            var result = await _mediator.Send(createCourseCommand, token);
+            var result = await _mediator.Send(createQuizCommand, token);
             return Results.Ok(result);
         }
         catch (System.Exception e)
