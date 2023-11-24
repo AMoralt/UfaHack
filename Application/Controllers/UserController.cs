@@ -76,21 +76,4 @@ public class UserController : ControllerBase
             return Results.BadRequest(e.Message);
         }
     }
-    [Authorize]
-    [HttpGet]
-    public async Task<IResult> Sign(CancellationToken token)
-    {
-        try
-        {
-            return Results.Ok();
-        }
-        catch (UnauthorizedException e)
-        {
-            return Results.Unauthorized();
-        }
-        catch (System.Exception e)
-        {
-            return Results.BadRequest(e.Message);
-        }
-    }
 }

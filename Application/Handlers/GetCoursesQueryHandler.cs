@@ -30,6 +30,7 @@ public class GetCoursesQueryHandler : IRequestHandler<GetCoursesQuery, IEnumerab
 
         return result.Select(x => new CoursesDTO
         {
+            Id = x.Id,
             Title = x.Title,
             Description = x.Description,
             Subject = x.Subject,
