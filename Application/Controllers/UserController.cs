@@ -1,5 +1,6 @@
-﻿
+﻿using Application.Exception;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 [Route("[controller]")]
@@ -11,24 +12,52 @@ public class TicketController : ControllerBase
     {
         _mediator = mediator;
     }
-    
+    [Route("Account/Login")]
+    [HttpPost]
+    public async Task<IResult> Login([FromBody] LoginQuery loginData,CancellationToken token)
+    {
+        try
+        {
+            var result = await _mediator.Send(loginData, token);
+
+            return Results.Json(result);
+        }
+        catch (UnauthorizedException e)
+        {
+            return Results.Unauthorized();
+        }
+        catch (System.Exception e)
+        {
+            return Results.BadRequest(e.Message);
+        }
+    }
+    /*[Route("Account/SignIn")]
+    [HttpPost]
+    public async Task<IResult> Signin([FromBody] SigninQuery signinData,CancellationToken token)
+    {
+        try
+        {
+            var result = await _mediator.Send(signinData, token);
+
+            if (result is null)
+                return Results.BadRequest();
+
+            return Results.Ok();
+        }
+        catch (UnauthorizedException e)
+        {
+            return Results.Unauthorized();
+        }
+        catch (System.Exception e)
+        {
+            return Results.BadRequest(e.Message);
+        }
+    }*/
+
     [HttpGet("{id}")] // GET /ticket/id
     public async Task<IResult> GetUserById(int id, CancellationToken token)
     {
         Console.WriteLine("UserController.GetUserByIdAndName");
-        return Results.Ok(null);
-    }
-    [HttpGet("[action]")] //placeholder for action name
-    public async Task<IResult> GiveOut(CancellationToken token)
-    {
-        var ticket = new GiveOutAviaTicketCommand()
-        {
-            Status = "1",
-            Ticket = "2",
-            Size = "3"
-        };
-
-        var result = await _mediator.Send(ticket, token);
         return Results.Ok(null);
     }
 }
