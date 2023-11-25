@@ -32,7 +32,7 @@ public class UserProgressController : ControllerBase
         }
     }
     
-    [HttpGet("completionRate/{courseId}")]
+    [HttpGet("CourseCompletionRate/{courseId}")]
     public async  Task<IResult> GetCourseCompletionRate(int courseId, CancellationToken cancellationToken)
     {
         try
@@ -46,7 +46,7 @@ public class UserProgressController : ControllerBase
             return Results.BadRequest(e.Message);
         }
     }
-    [HttpGet("completionRate/{moduleId}")]
+    [HttpGet("ModuleCompletionRate/{moduleId}")]
     public async  Task<IResult> GetModuleCompletionRate(int moduleId, int userId, CancellationToken cancellationToken)
     {
         try
