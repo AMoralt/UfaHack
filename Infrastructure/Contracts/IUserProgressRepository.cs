@@ -12,4 +12,5 @@ public interface IUserProgressRepository : IRepository<UserProgress>
 
     Task<int> GetTotalModulesCount(int courseId, CancellationToken cancellationToken = default);
     Task<int> GetCompletedModulesCount(int courseId, CancellationToken cancellationToken = default);
+    Task<int> GetCompletedQuizCount(int moduleId, int userId, CancellationToken cancellationToken = default);
 }

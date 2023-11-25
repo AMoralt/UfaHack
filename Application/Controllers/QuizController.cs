@@ -14,7 +14,7 @@ public class QuizController : ControllerBase
         _mediator = mediator;
     }
 
-    // Get all quizzes
+    
     [HttpGet]
     public async Task<IResult> GetAllQuizzes(int moduleId, CancellationToken token)
     {
@@ -30,7 +30,7 @@ public class QuizController : ControllerBase
         }
     }
 
-    // Create a new quiz
+    
     [HttpPost]
     public async Task<IResult> CreateQuiz([FromBody] CreateQuizCommand createQuizCommand, CancellationToken token)
     {

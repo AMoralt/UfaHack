@@ -20,7 +20,7 @@ public class JwtService : IJwtService
 
     public string GenerateJwtToken(CredentialsDTO user)
     {
-        // Set our tokens claims
+        
         var claims = new[]
         {
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("N")),
@@ -29,25 +29,25 @@ public class JwtService : IJwtService
             new Claim("uname", user.Name.ToString())
         };
 
-        // Create the credentials used to generate the token
+        
         var credentials = new SigningCredentials(
-            // Get the secret key
+           
             new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtConfig.Key)),
-            // Use HS256 algorithm
+            
             SecurityAlgorithms.HmacSha256);
 
-        // Generate the Jwt Token
+        
         var token = new JwtSecurityToken(
             issuer: _jwtConfig.Issuer,
             audience: _jwtConfig.Audience,
             claims: claims,
             signingCredentials: credentials,
             notBefore: DateTime.Now,
-            // Expire if not used
-            expires: DateTime.Now.AddDays(1)//AddHours(24)
+            
+            expires: DateTime.Now.AddDays(1)
         );
 
-        // Return the generated token
+        
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
 

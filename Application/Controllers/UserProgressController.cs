@@ -16,7 +16,7 @@ public class UserProgressController : ControllerBase
         _mediator = mediator;
     }
 
-    // POST api/UserProgress
+    
     [HttpPost]
     public async Task<IResult> Create([FromBody] CreateUserProgressCommand command,
         CancellationToken cancellationToken)
@@ -38,6 +38,20 @@ public class UserProgressController : ControllerBase
         try
         {
             var query = new GetCourseCompletionQuery(courseId);
+            var completionRate = await _mediator.Send(query, cancellationToken);
+            return Results.Ok(completionRate);
+        }
+        catch (System.Exception e)
+        {
+            return Results.BadRequest(e.Message);
+        }
+    }
+    [HttpGet("completionRate/{moduleId}")]
+    public async  Task<IResult> GetModuleCompletionRate(int moduleId, int userId, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var query = new GetModuleCompletionQuery(moduleId,userId);
             var completionRate = await _mediator.Send(query, cancellationToken);
             return Results.Ok(completionRate);
         }

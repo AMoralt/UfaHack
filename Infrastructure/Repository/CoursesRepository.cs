@@ -43,7 +43,7 @@ public class CoursesRepository : ICoursesRepository
             FROM Courses
             OFFSET @Offset";
 
-        if (limit != 0) //if limit is entered by user
+        if (limit != 0) 
             sql += "\rLIMIT @Limit";
         
         var connection = await _dbConnectionFactory.CreateConnection(cancellationToken);

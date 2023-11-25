@@ -7,8 +7,7 @@ namespace Infrastructure.Repository;
 
 public class UserProgressRepository : IUserProgressRepository
 {
-    // Assuming you have a database connection factory like IDbConnectionFactory
-
+    
     private readonly IDbConnectionFactory<NpgsqlConnection> _dbConnectionFactory;
     private readonly IQuizRepository _quizRepository;
 
@@ -47,12 +46,9 @@ public class UserProgressRepository : IUserProgressRepository
         const string sql = @"
         UPDATE UserProgress
         SET 
-            UserID = @UserID,
-            CourseID = @CourseID,
-            ModuleID = @ModuleID,
             CompletionStatus = @CompletionStatus,
             Score = @Score
-        WHERE Id = @ProgressID;
+        WHERE UserID = @UserID AND CourseID = @CourseID AND ModuleID = @ModuleID
     ";
         
         const string sql2 = @"
@@ -61,7 +57,7 @@ public class UserProgressRepository : IUserProgressRepository
         JOIN Quizzes q ON us.QuizID = q.QuizID
         WHERE us.UserID = @UserID
         AND q.ModuleID = @ModuleID
-        AND us.IsCorrect = TRUE;
+        AND us.IsCorrect = TRUE;    
     ";
         var connection = await _dbConnectionFactory.CreateConnection(cancellationToken);
         var correctAnswersCount = await connection.ExecuteScalarAsync<int>(sql2, new { UserID = item.UserID, ModuleID = item.ModuleID });
@@ -70,7 +66,7 @@ public class UserProgressRepository : IUserProgressRepository
         var totalQuizCount = totalQuizzes.Count();
 
         if (totalQuizCount == 0)
-            throw new Exception();
+            throw new Exception();  
 
         var parameters = new
         {
@@ -93,9 +89,8 @@ public class UserProgressRepository : IUserProgressRepository
             return 4;
         else if (correctPercentage >= 0.50m) // от 50% до 69%
             return 3;
-        // Можно добавить дополнительные условия для других оценок
         else
-            return 2; // или другая минимальная оценка
+            return 2; 
     }
 
     public Task DeleteAsync(int progressId, CancellationToken cancellationToken = default)
@@ -129,5 +124,20 @@ public class UserProgressRepository : IUserProgressRepository
         var completedModulesCount = await connection.ExecuteScalarAsync<int>(sql, new { CourseID = courseId });
 
         return completedModulesCount;
+    }
+    
+    public async Task<int> GetCompletedQuizCount(int moduleId, int userId, CancellationToken cancellationToken = default)
+    {
+        const string sql = @"
+        SELECT COUNT(DISTINCT us.QuizID) AS CompletedQuizzes
+        FROM UserSubmissions us
+        JOIN Quizzes q ON us.QuizID = q.QuizID
+        WHERE q.ModuleID = @moduleId AND us.UserID = @userId;
+    ";
+
+        var connection = await _dbConnectionFactory.CreateConnection(cancellationToken);
+        var completedQuizCount = await connection.ExecuteScalarAsync<int>(sql, new { moduleId = moduleId, userId = userId });
+
+        return completedQuizCount;
     }
 }

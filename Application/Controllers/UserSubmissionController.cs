@@ -14,7 +14,7 @@ public class UserSubmissionController : ControllerBase
         _mediator = mediator;
     }
     
-    // POST api/UserSubmission
+    
     [HttpPost]
     public async Task<IResult> Create([FromBody] CreateUserSubmissionCommand command, CancellationToken token)
     {

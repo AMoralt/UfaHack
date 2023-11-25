@@ -17,7 +17,6 @@ public class UpdateUserProgressCommandHandler : IRequestHandler<UpdateUserProgre
     {
         var userProgress = new UserProgress
         {
-            Id = request.ProgressID,
             UserID = request.UserID,
             CourseID = request.CourseID,
             ModuleID = request.ModuleID,
@@ -30,5 +29,4 @@ public class UpdateUserProgressCommandHandler : IRequestHandler<UpdateUserProgre
 }
 
 public record UpdateUserProgressCommand(
-    int ProgressID, int UserID, int CourseID, int ModuleID, bool CompletionStatus, int? Score
-) : IRequest<bool>;
+    int UserID, int CourseID, int ModuleID, bool CompletionStatus) : IRequest<bool>;

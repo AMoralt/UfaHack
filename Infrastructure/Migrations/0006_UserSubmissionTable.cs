@@ -15,7 +15,8 @@ CREATE TABLE UserSubmissions (
     IsCorrect BOOLEAN NOT NULL,
     Timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (UserID) REFERENCES Users(UserID),
-    FOREIGN KEY (QuizID) REFERENCES Quizzes(QuizID)
+    FOREIGN KEY (QuizID) REFERENCES Quizzes(QuizID),
+    UNIQUE(UserID, QuizID)                             
 );
 ");
     }
